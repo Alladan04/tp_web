@@ -78,7 +78,8 @@ def settings(request, user_id):
      except:
          return  HttpResponse("no such user",status = 401)
      
-     return  render (request=request, template_name="settings.html", status = 200)
+     return  render (request=request, template_name="settings.html", context = {'tag_list':get_all_tags(),
+                                                              'user_list':get_best_members(),'auth':True}, status = 200)
 
 def login(request):
      if request.method == 'POST':
