@@ -51,7 +51,7 @@ def tag(request, tag_name):
 
 def search(request):
      raw_questions = Question.objects.find(request.GET.get('search', ''))
-     questions = paginate(raw_questions, request, 3)
+     questions = paginate(raw_questions, request, 30)
      return render(request=request, template_name="index.html",context = {'questions':questions.object_list, 'page':questions,'tag_list':get_all_tags(),'user_list':get_best_members()}, status=200)
 
 def question(request, id):
