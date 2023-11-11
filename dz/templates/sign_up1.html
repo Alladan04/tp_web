@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{%load static%}
+{% block content %}
+<main class = "flex-shrink-8"> 
+     <div class = "container">
+       <div class="row">
+
+         <div class="col-8">
+           <h1>Registration</h1>
+           <form method = "POST" action = "{%url 'signup_url'%}">
+               {% csrf_token %}
+               {{ form.non_field_errors }}
+                <div class="mb-3 row" style = "margin-top: 10%; margin-bottom: 10%;">
+               <div class="col-auto">
+                {{ form.username.errors }}
+                    <label for="username" class="col-form-label">Login</label>
+               </div>
+               <div class="col-auto">
+                
+                {{form.username}}
+                 <!--<input type="text" class="form-control" id="username"  style = "margin-left: 20px;" placeholder="Enter wour login here">-->
+               </div>
+             </div>
+               <div class="mb-3 row">
+                    <label for="email" class="col-sm-2 col-form-label">Email address</label>
+                    <div class="col-sm-10">
+                         {{form.email}}
+                        <!-- <input type="input" class="form-control" id="email" placeholder="name@example.com">-->
+                    </div>
+                  </div>
+               <div class="mb-3 row">
+                    <label for="nick" class="col-sm-2 col-form-label">NickName</label>
+                    <div class="col-sm-10">
+                         {{form.name}}
+                        <!-- <input type="input" class="form-control" id="nick" placeholder="Allochka">-->
+                    </div>
+               </div>
+          <div class="row g-3 align-items-center" style = "margin-top: 10px;">
+               
+                 <label for="pass" class="col-sm-2 col-form-label">Password</label>
+               
+               <div class="col-sm-10"  >
+                    {{form.password}}
+                <!-- <input type="password" id="pass" class="form-control"aria-describedby="passwordHelpInline" >-->
+               </div>
+               
+                 <span id="passwordHelpInline" class="form-text">
+                   Must be 4-20 characters long.
+                 </span>
+               
+             </div>
+             <div class="row g-3 align-items-center" style = "margin-top: 10px;margin-bottom: 30px; ">
+               
+               <label for="passrep" class="col-sm-2 col-form-label">Repeat password</label>
+             
+             <div class="col-sm-10"  >
+               {{form.repeat_password}}
+               <!--<input type="password" id="passrep" class="form-control"aria-describedby="passwordHelpInline1" >-->
+             </div>
+             
+               <span id="passwordHelpInline1" class="form-text">
+                 Must be 4-20 characters long.
+               </span>
+               
+           </div>
+           {%include "components/upload_avatar.html"%}
+           {{form.img}}
+           <button class="btn btn-bd-primary" type="submit" style = "background-color: #aca6fd; margin-bottom: 20px;">Save</button>
+         </div>
+     </form>
+         <div class = "col-4">
+          {% include 'components/tags.html' %}
+         </div>
+     </div>
+
+   </main>
+{% endblock %}
