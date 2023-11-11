@@ -9,6 +9,9 @@
 
          <div class="col-9">
            <h1>Questions</h1>
+           {%if tag_name%}
+           <h2>Tag:{{tag_name}}</h2>
+           {%endif%}
            {% for question in questions %}
           
            {%include 'components/question-comp.html' %}

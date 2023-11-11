@@ -13,10 +13,6 @@ class QuestionManager(models.Manager):
           return self.all().order_by('-creation_date')
      
      def get_hot(self, limit:int|None):
-          '''if limit:
-               return self.all().order_by('-rating')[0:limit]
-          else :
-               return self.all().order_by('-rating')'''
           likes = (QuestionLike.objects
           .values('question')
           .annotate(qcount=models.Count('question'))
@@ -31,16 +27,20 @@ class QuestionManager(models.Manager):
      def get_by_id(self, id:int):
           return self.get(id = id)
      
-#tqs = TagQuestion.objects.get_by_question (question)
-#     tags =[ {'name':tg.tag.name} for tg in tqs]
 
 class TagManager(models.Manager):
      def get_tag_by_name(self,name):
           return self.get(name = name)
      
-     def get_all(self, name):
-          return self.all()
-     
+     def get_top(self, n):
+          likes = (TagQuestion.objects
+          .values('tag')
+          .annotate(count=models.Count('tag'))
+          .order_by(('-count')))
+          if n and n<likes.count():
+               likes = likes[0:n]
+          profiles = [Tag.objects.get(id = lk['tag'])for lk in likes]
+          return profiles
      
 class TagQuestionManager(models.Manager):
      def get_by_tag(self, tag):
@@ -58,6 +58,8 @@ class TagQuestionManager(models.Manager):
           tqs = self.filter(question = question)
           tags = [ {'name':tg.tag.name} for tg in tqs]
           return tags
+  
+          
 
 
 class AnswerManager(models.Manager):
@@ -66,15 +68,19 @@ class AnswerManager(models.Manager):
 
 class ProfileManager(models.Manager):
      def get_top(self, n=10):
-          all = self.all().order_by('-rating')
-          return (all[0:min(n, len(all))])
-     
+          likes = (Answer.objects
+          .values('author')
+          .annotate(ucount=models.Count('author'))
+          .order_by(('-ucount')))
+          if n and n<likes.count():
+               likes = likes[0:n]
+          profiles = [Profile.objects.get(id = lk['author'])for lk in likes]
+          return profiles
+      
+ ##########################################################################################    
 
 #Пользователь – электронная почта, никнейм, пароль, аватарка, дата регистрации, рейтинг.
 class Profile(models.Model):
-    #nickname = models.CharField(max_length=150, unique=True)
-    #email = models.CharField(max_length=150, blank=True, null=True)
-    #creation_date = models.DateTimeField(blank=False,null = False) ==date_joined
     img= models.CharField(max_length=150,blank =True, null = True)
     rating = models.IntegerField(blank = True, null = True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank = True, null=True)
@@ -82,15 +88,6 @@ class Profile(models.Model):
     class Meta:
         managed = True
         db_table = 'profiles'
-'''@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()'''
-
 
 #Вопрос – заголовок, содержание, автор, дата создания, теги, рейтинг.
    

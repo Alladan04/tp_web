@@ -8,25 +8,7 @@ from .forms import LoginForm, SignupForm
 import requests as python_requests
 from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
-HOST = "127.0.0.1"
-PORT = ":8000"
-TAGS = [{'id':1, 'name': 'python'}, {'id':2, 'name':'django'}]
-QUESTIONS = [{'id':i,
-               'title':'Question '+str(i),
-               'text': str(i)+''') Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua.  ''',
-              'img':'pic.jpeg',
-              'likes': i*2,
-              'tags': TAGS[i%2]} for i in range(10)
-              ]
-ANSWERS = [{'id':i,
-            'text':"LOrem ipsum Answer text ",
-            'question_id':i%10,
-            'likes':i*3,
-            'correct':bool(i%2)} for i in range(40)]
+
 ##########################################################################
 def paginate(objects,request,   per_page = 10):
      page = request.GET.get('page', 1)
@@ -36,8 +18,9 @@ def paginate(objects,request,   per_page = 10):
      except:
           return paginator.page(1)   
 def get_all_tags():
-     tqs = TagQuestion.objects.all()[:10]
-     tags = [{'name':tg.tag.name} for tg in tqs ]
+     #tqs = TagQuestion.objects.all()[:10]
+     tqs = Tag.objects.get_top(20)
+     tags = [{'name':tg.name} for tg in tqs ]
      return tags
 def get_best_members():
      users_raw = Profile.objects.get_top(10)
@@ -61,10 +44,10 @@ def tag(request, tag_name):
      try:
           tag = Tag.objects.get_tag_by_name(tag_name)
      except:
-          return  render(request=request, template_name='index.html',context = {'tag_list':get_all_tags(),'user_list':get_best_members()},status = 404)
+           return HttpResponse( status = 404)
      raw_questions = TagQuestion.objects.get_questions_by_tag(tag)
      questions = paginate(raw_questions, request, 30)
-     return render(request=request, template_name="index.html",context = {'questions':questions.object_list, 'page':questions,'tag_list':get_all_tags(),'user_list':get_best_members()}, status=200)
+     return render(request=request, template_name="index.html",context = {'questions':questions.object_list, 'tag_name':tag_name,'page':questions,'tag_list':get_all_tags(),'user_list':get_best_members()}, status=200)
 
 def search(request):
      raw_questions = Question.objects.find(request.GET.get('search', ''))
@@ -77,7 +60,7 @@ def question(request, id):
      except:
          return HttpResponse(status = 404)
      answers = Answer.objects.get_by_question(question)
-     page_items = paginate(answers,request, 1)
+     page_items = paginate(answers,request, 20)
      tags= TagQuestion.objects.get_tag_list_by_question(question)[0:3]
      return render(request = request,
                     template_name="question.html", context={'question':question, 
@@ -88,7 +71,7 @@ def question(request, id):
                                                               'user_list':get_best_members()},status=200)
 def ask(request):
      return render(request=request, template_name="ask.html", context = { 'tag_list':get_all_tags(),
-                                                              'user_list':get_best_members()}, status=200)
+                                                              'user_list':get_best_members(),'auth':True}, status=200)
 def settings(request, user_id):
      try:
           user = Profile.objects.get(id = user_id).user
@@ -111,6 +94,8 @@ def login(request):
                     return HttpResponse('Disabled account')
             else:
                 return HttpResponse('Invalid login or password')
+        else:
+             return HttpResponse('Bad request', status = 400)
      else:
         form = LoginForm()
         return render(request, 'login.html', {'form': form,'tag_list':get_all_tags(),
