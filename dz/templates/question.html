@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{%load static%}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static './css/question.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static './css/style.css' %}">
+<main class="flex-shrink-8">
+     <div class="container">
+       <div class="row ">
+         <div class="col-8" style="margin-bottom: 100px;">
+           <div class = "container">
+               <div class = "row">
+               <div class = "col-4">
+                    <img class = "q-image" src ="{% static '/imgs/pic.jpeg' %} ">
+                    <div class="like-container">
+                         <button class="like-button heart"></button>
+                         <span class="like-count">{{question.likes}}</span>
+                    </div>
+               </div>
+               <div class = "col-8 container" style = "border: 3cap; border-color: black;">
+  
+                    <h1>{{question.title}}<h1>
+                    <text>{{question.text}}
+                         </text>
+                    <div class = "container" style = "display:inline-flex; padding: 0%;">
+                    <h5 style = "margin-right: 5px;">Tags:</h5>
+                    {% for tag in tags%}
+                    <a class = "tag_q" href = "{%url 'tag_url' tag.name%}" >{{tag.name}}</a>
+                    {%endfor%}
+                     </div>
+               
+               </div>
+          </div>
+           
+           {% for answer in answers %}
+           <div class = "row question">
+               <div class = "col-3">
+                 <img class = "q-image" src = "{% static '/imgs/pic.jpeg' %}"> 
+                 <div class="like-container">
+                    <button class="like-button heart"></button>
+                    <span class="like-count">{{answer.likes}}</span>
+               </div>
+               </div>
+                 <div class = "col-9 container">
+                   <div class = "q-text">{{answer.text}}</div>
+                
+                
+               <div class="form-check container">
+                    <input class="form-check-input" type="checkbox" value="{{answer.correct}}" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault" >
+                      Correct
+                    </label>
+                  </div>
+               </div>
+             
+             </div>
+             {%endfor%}
+             
+            </div>
+             <!-- ТУТ еще пагниацию воткнуть надо!!!!!-->
+            {% include "components/pagination.html"%}
+             <div class = container>
+               <textarea placeholder="Type your answer here"> </textarea>
+               <button class="btn btn-bd-primary" type="submit" style = "background-color: #a77af0;">Answer</button>
+            </div>
+          </div>
+     
+           <div class = "col-4">
+             {% include "components/tags.html" %}
+           </div>
+         
+        </div>
+       </div>
+       </main>
+    <script>
+     const likeButton = document.querySelector('.like-button');
+     const likeCount = document.querySelector('.like-count');
+ 
+     likeButton.addEventListener('click', () =>{
+  // Получаем текущее значение счетчика лайков и увеличиваем на 1
+  const currentCount = parseInt(likeCount.textContent, 10);
+  likeCount.textContent = currentCount + 1;
+});
+    </script>
+    {% endblock %}

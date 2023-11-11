@@ -1,0 +1,27 @@
+{%load static%}
+<link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %} ">
+<div class = "row" style ="margin-left: 20px;">
+     <h2> Popular Tags </h2>
+     <div class = "tags">
+      {% cycle 'big' 'medium' 'small' as sizes %}
+      {%cycle 'dark' 'light' bright as colors%}
+      {% for tag in tag_list%}
+      {%if %}
+       <a class="tag {{sizes}} {{colors}}" href = "{%url 'tag_url' tag.name%}">tag.name</a>
+       <a class = "tag medium light" href ="">CSS</a>
+       <a class="tag small bright" href ="">JavaScrypt</a>
+       <a class="tag big light" href = "">HTML</a>
+       <a class="tag small dark" href ="">Frontend</a>
+       <a class = "tag medium bright" href ="">SQL</a>
+       
+     </div>
+   </div>
+   <div class = "row" style ="margin-left: 20px;">
+     <h2> Best Members </h2>
+     <div class ="top-members">
+       <a class="mem" href = ""> A.Pushkin</a>
+       <a class="mem" href = ""> Allochka</a>
+       <a class="mem" href = ""> Shrack</a>
+       <a class="mem" href = ""> Abobos</a>
+     </div>
+   </div>

@@ -1,0 +1,53 @@
+{% extends 'base.html'%}
+{%load static%}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/login.css' %} ">
+<main class = "flex-shrink-8"> 
+     <div class = "container">
+       <div class="row">
+          <div class="col-8">
+          <h1>Log In</h1>
+          <form method = "POST" action = "{%url 'login_url'%}">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+          <div class="row g-3 align-items-center" style = "margin-top: 10%; margin-bottom: 10%;">
+               <div class="col-3">
+                {{ form.username.errors }}
+                    <label for="username" class="col-form-label">Login</label>
+               </div>
+               <div class="col-auto">
+                
+                {{form.username}}
+                 <!--<input type="text" class="form-control" id="username"  style = "margin-left: 20px;" placeholder="Enter wour login here">-->
+               </div>
+             </div>
+         
+          
+           <div class="row g-3 align-items-center" style = "margin-bottom: 10%;">
+               <div class="col-3">
+                {{ form.password.errors }}
+                 <label for="inputPassword6" class="col-form-label">Password</label>
+               </div>
+               <div class="col-auto">
+                {{form.password}}
+                <!-- <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">-->
+               </div>
+               <div class="col-auto">
+                 <span id="passwordHelpInline" class="form-text">
+                   Must be 8-20 characters long.
+                 </span>
+               </div>
+             </div>
+             <div style = "display: block;">
+             <button class="btn btn-bd-primary btn-col" type="submit"> Log in</button>
+             <a href ="{%url 'signup_url'%}" class = "create" style = "margin-bottom: 200px;">Create new accaunt</a>
+          </div>
+         </div>
+        </form>
+         <div class = "col-4" >
+           {% include 'components/tags.html' %}
+         </div>
+     </div>
+
+   </main>
+{% endblock %}

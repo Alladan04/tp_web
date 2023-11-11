@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{%load static%}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/ask.css'%}">
+              <main class="flex-shrink-8">
+                <div class="container">
+                  <div class="row needs-validation" novalidate>
+                    <div class="col-8" style="margin-bottom: 100px;">
+                      <h1>New Question</h1>
+                      <div class="form-element">
+                        <label class="form-label" aria-required="true">Title</label>
+                        <input class="form-control" type="text" id="titleInput" placeholder="Why do people lie?" required>
+                        <div class="invalid-feedback">
+                          Please enter the title
+                        </div>
+                      </div>
+                      <div class="form-element">
+                        <label class="form-label" aria-required="true">Text</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Specify your question" ></textarea>
+                      </div>
+                      <div class="form-element">
+                        <label class="form-label" aria-required="true">Tags</label>
+                        <input class="form-control" type="text" id="tagsInput" placeholder="Python, Java, CSS" required>
+                       
+                        <div id="tagSuggestions"></div>
+                      </div>
+                      <div class="col-12" style="margin-top: 30px;">
+                        <button class="btn btn-outline-success sub-form" type="submit">ASK!</button>
+                      </div>
+                    </div>
+                      <div class = "col-4">
+                        {% include "components/tags.html" %}
+                        </div>
+                    
+                   </div>
+                  </div>
+                  </main>
+               
+
+   
+         <!-- Include Bootstrap JS and jQuery -->
+         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+         <script>
+          
+          $(document).ready(function() {
+            
+  // Predefined list of tags
+  
+  // Function to check if tag is valid based on the predefined list
+ 
+  function isTitleValid(title) {
+    if (title.length>0){
+    return true;
+    }
+    return false;
+  }
+  $('#titleInput').on('blur', function() {
+    var input = $(this);
+    if (!isTitleValid(input.val())) {
+      input.addClass('is-invalid');
+    }
+  });
+  $('#titleInput').on('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      var input = $(this);
+      if (!isTitleValid(input.val())) {
+        input.addClass('is-invalid');
+      }
+    }
+  });
+  $('#titleInput').on('focus', function() {
+    $(this).removeClass('is-invalid');
+  });
+  $('form').on('submit', function(e) {
+    var titleInput = $('#titleInput');
+    var isValid = true;
+
+   
+    if (!isTitleValid(titleInput.val())){
+      titleInput.addClass('is-invalid');
+      isValid = false;
+    }
+    if (!this.checkValidity()|| !isValid) {
+      e.preventDefault();
+      e.stopPropagation();
+      titleInput.addClass('is-invalid');
+    }
+   
+
+  });
+  
+});
+         </script>
+{% endblock %}

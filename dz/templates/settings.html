@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{%load static%}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/settings.css' %} ">
+<main class = "flex-shrink-8"> 
+     <div class = "container">
+       <div class="row">
+
+         <div class="col-9">
+          <h1>Settings :{{user.name}}</h1>
+         {%include "components/user-form.html"%}
+         {%include "components/upload_avatar.html"%}
+          <div class="col-12" style="margin-top: 30px;">
+               <button class="btn btn-bd-primary" type="submit" style = "background-color: #aca6fd; margin-bottom: 20%;">Save</button>
+             </div>    
+             
+         </div>
+         <div class = "col-3">
+           {% include 'components/tags.html' %}
+         </div>
+     </div>
+     </div>
+
+
+   </main>
+
+
+
+{% endblock%}

@@ -1,0 +1,23 @@
+{%load static%}
+<link rel="stylesheet" type="text/css" href="{% static '/css/userblock.css' %} ">
+
+<ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu"> 
+     <div>
+     <li class="nav-item ">
+          <a class="nav-link" href="{% url 'settings_url' 1 %}">Settings</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="{% url 'basic_url' %}">Log out</a>
+        </li>
+     </div>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'basic_url' %}">username</a>
+        </li>
+     <li class="nav-item dropdown">
+
+      
+         <div class="profile-pic">
+             <img src="{%static '/imgs/pic.jpeg'%}" alt="Profile Picture">
+       
+       </a></li>
+       </ul>

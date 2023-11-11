@@ -1,0 +1,13 @@
+
+   .preview{
+     display: inline-block;
+     width: 8em;
+     height: 8em;
+     background: rgb(224, 223, 255);
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+     margin-bottom: 20px;
+     align-content: center;
+     justify-content: center;
+   }

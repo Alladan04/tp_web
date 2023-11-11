@@ -1,0 +1,22 @@
+{%load static%}
+<link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %} ">
+<div class = "row" style ="margin-left: 20px;">
+     <h2> Popular Tags </h2>
+     <div class = "tags">
+      
+     
+      {% for tag in tag_list%}
+    
+       <a class="tag {% cycle 'big dark' 'medium bright' 'big light' 'small dark' 'big bright' 'medium light' 'small light' 'medium light' as sizes %} " href = "{%url 'tag_url' tag.name%}">{{tag.name}}</a>
+     {% endfor %}
+       
+     </div>
+   </div>
+   <div class = "row" style ="margin-left: 20px;">
+     <h2> Best Members </h2>
+     <div class ="top-members">
+      {%for user in user_list%}
+       <a class="mem" href = "{%url 'basic_url' %}"> {{user.name}}</a>
+     {%endfor%}
+     </div>
+   </div>

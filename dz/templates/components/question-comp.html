@@ -1,0 +1,12 @@
+{%load static%}
+<div class = "row question">
+     <div class = "col-3">
+       <img class = "q-image" src = "{% static '/imgs/pic.jpeg'%}">
+     </div>
+       <div class = "col-9">
+         <div class = "q-title"><a href="{%url 'question_url' question.id%}">{{question.title}}</a></div>
+         <div class = "q-text">{{question.text}}</div>
+
+       </div>
+    
+   </div>
