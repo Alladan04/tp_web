@@ -11,7 +11,7 @@ h2{
 
 .question {
      border: 2px solid rgb(170, 250, 96);
-     border-radius: 10%;
+ 
      margin-top: 20px;
      margin-bottom: 20px;
      padding: 10px;
@@ -35,6 +35,10 @@ h2{
      
 }
 .q-text{
+     height: 100px;
+     width : 100%;
+     overflow: hidden;
+	text-overflow: ellipsis;
      font-size: 16px;
      font-family: Arial, Helvetica, sans-serif;
      color:rgb(37, 0, 85);

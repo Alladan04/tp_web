@@ -13,11 +13,12 @@
           <div class="row g-3 align-items-center" style = "margin-top: 10%; margin-bottom: 10%;">
                <div class="col-3">
                 {{ form.username.errors }}
-                    <label for="username" class="col-form-label">Login</label>
+                  <label for="username" class="col-form-label">Login</label>
+                  
                </div>
                <div class="col-auto">
-                
                 {{form.username}}
+              
                  <!--<input type="text" class="form-control" id="username"  style = "margin-left: 20px;" placeholder="Enter wour login here">-->
                </div>
              </div>
@@ -30,6 +31,9 @@
                </div>
                <div class="col-auto">
                 {{form.password}}
+                <div class="invalid-feedback">
+                  Неверный пароль!
+                </div>
                 <!-- <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">-->
                </div>
                <div class="col-auto">

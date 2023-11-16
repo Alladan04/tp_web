@@ -1,11 +1,25 @@
 {%load static%}
+<link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %} ">
+<link rel="stylesheet" type="text/css" href="{% static '/css/like.css' %} ">
+<link rel="stylesheet" type="text/css" href="{% static '/css/question.css' %} ">
+
 <div class = "row question">
      <div class = "col-3">
        <img class = "q-image" src = "{% static '/imgs/pic.jpeg'%}">
+       {%include 'components/like_comp.html'%}
      </div>
        <div class = "col-9">
          <div class = "q-title"><a href="{%url 'question_url' question.id%}">{{question.title}}</a></div>
          <div class = "q-text">{{question.text}}</div>
+         <div class = "container" style = "display:inline-flex; padding: 0%;width:200px;">
+          <h5 style = "margin-right: 5px;">Tags:</h5>
+          {% for tag in question.tagquestion_set.all%}
+         
+          {%if forloop.counter <= 3 %}
+          <a class = "tag_q" href = "{%url 'tag_url' tag.tag.name%}" >{{tag.tag.name}}</a>
+          {%endif%}
+          {%endfor%}
+           </div>
 
        </div>
     

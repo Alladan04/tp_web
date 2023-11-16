@@ -32,6 +32,8 @@ def index(request):
          auth = request.GET.get("authed")
      else: auth = False     
      raw_questions = Question.objects.get_new()
+     
+     #qs = [{ "tags":TagQuestion.objects.get_tag_list_by_question(rq)} for rq in raw_questions]
      questions = paginate(raw_questions, request, 30)
      return render(request=request, template_name="index.html",context = {'questions':questions.object_list, 'page':questions, 'tag_list':get_all_tags(), "auth":auth,'user_list':get_best_members()}, status=200)
 

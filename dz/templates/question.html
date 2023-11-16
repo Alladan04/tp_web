@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {%load static%}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/like.css' %} ">
 <link rel="stylesheet" type="text/css" href="{% static './css/question.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static './css/style.css' %}">
 <main class="flex-shrink-8">
@@ -11,10 +12,7 @@
                <div class = "row">
                <div class = "col-4">
                     <img class = "q-image" src ="{% static '/imgs/pic.jpeg' %} ">
-                    <div class="like-container">
-                         <button class="like-button heart"></button>
-                         <span class="like-count">{{question.likes}}</span>
-                    </div>
+                 {%include 'components/like_comp.html'%}
                </div>
                <div class = "col-8 container" style = "border: 3cap; border-color: black;">
   
@@ -35,10 +33,7 @@
            <div class = "row question">
                <div class = "col-3">
                  <img class = "q-image" src = "{% static '/imgs/pic.jpeg' %}"> 
-                 <div class="like-container">
-                    <button class="like-button heart"></button>
-                    <span class="like-count">{{answer.likes}}</span>
-               </div>
+                 {%include 'components/like_comp.html'%}
                </div>
                  <div class = "col-9 container">
                    <div class = "q-text">{{answer.text}}</div>

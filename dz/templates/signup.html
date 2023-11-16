@@ -14,6 +14,7 @@
                
                <div class="col-sm-10"  >
                  <input type="password" id="pass" class="form-control"aria-describedby="passwordHelpInline" >
+                 
                </div>
                
                  <span id="passwordHelpInline" class="form-text">
@@ -24,9 +25,12 @@
              <div class="row g-3 align-items-center" style = "margin-top: 10px;margin-bottom: 30px; ">
                
                <label for="passrep" class="col-sm-2 col-form-label">Repeat password</label>
-             
+
              <div class="col-sm-10"  >
-               <input type="password" id="passrep" class="form-control"aria-describedby="passwordHelpInline1" >
+               <input type="password" id="passrep" class="form-control is-invalid"aria-describedby="passwordHelpInline1" >
+               <div class="invalid-feedback">
+                Пароль не совпадает!
+                </div>
              </div>
              
                <span id="passwordHelpInline1" class="form-text">

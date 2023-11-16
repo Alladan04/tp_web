@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.db import connection
 #from .managers import QuestionManager, AnswerManager, TagManager, TagQuestionManager, ProfileManager
 
 class QuestionManager(models.Manager):
@@ -10,7 +10,10 @@ class QuestionManager(models.Manager):
           return self.all()
      
      def get_new(self):
-          return self.all().order_by('-creation_date')
+      
+        questions = self.all().order_by('-creation_date')  
+
+        return     questions
      
      def get_hot(self, limit:int|None):
           likes = (QuestionLike.objects
@@ -58,7 +61,7 @@ class TagQuestionManager(models.Manager):
           tqs = self.filter(question = question)
           tags = [ {'name':tg.tag.name} for tg in tqs]
           return tags
-  
+    
           
 
 
@@ -140,12 +143,14 @@ class QuestionLike(models.Model):
     class Meta:
         managed = True
         db_table = 'question_like'
+        unique_together = ["question", "user"]
 
 class AnswerLike(models.Model):
     answer = models.ForeignKey('Answer',models.DO_NOTHING, blank= True, null = True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank= True, null = True)
     class Meta:
         managed = True
+        unique_together = ["answer", "user"]
         db_table = 'answer_like'
 
 class UserLike(models.Model):
@@ -154,3 +159,4 @@ class UserLike(models.Model):
     class Meta:
         managed = True
         db_table = 'user_like'
+        unique_together = ["from_user", "to_user"]

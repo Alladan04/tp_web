@@ -69,17 +69,18 @@ class Command(BaseCommand):
         TagQuestion.objects.bulk_create(tqs)
         print ('TQS DONE')
         user_likes = [
-            UserLike(from_user =users[fake.random_int(min=0, max=users_count - 1)], 
+            UserLike(from_user =users[fake.unique.random_int(min=0, max=users_count - 1)], 
                      to_user = users[fake.random_int(min=0, max=users_count - 1)] )
-                     for _ in range(num*100)
+                     for _ in range(num)
         ]
         print('userlike data ready')
         UserLike.objects.bulk_create(user_likes)
         print ('USERLIKE DONE')
+        fake1 = Faker()
         question_likes = [
-             QuestionLike(user =users[fake.random_int(min=0, max=users_count - 1)], 
+             QuestionLike(user =users[fake1.unique.random_int(min=0, max=users_count - 1)], 
                      question = questions[fake.random_int(min=0, max=len(questions) - 1)])
-                     for _ in range(num*100)
+                     for _ in range(num)
         ]
         print ('questionlike data ready')
         QuestionLike.objects.bulk_create(question_likes)
