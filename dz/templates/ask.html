@@ -1,32 +1,23 @@
 {% extends "base.html" %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 {%load static%}
 {% block content %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'css/ask.css'%}">
               <main class="flex-shrink-8">
                 <div class="container">
                   <div class="row needs-validation" novalidate>
                     <div class="col-8" style="margin-bottom: 100px;">
                       <h1>New Question</h1>
-                      <div class="form-element">
-                        <label class="form-label" aria-required="true">Title</label>
-                        <input class="form-control" type="text" id="titleInput" placeholder="Why do people lie?" required>
-                        <div class="invalid-feedback">
-                          Please enter the title
-                        </div>
-                      </div>
-                      <div class="form-element">
-                        <label class="form-label" aria-required="true">Text</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Specify your question" ></textarea>
-                      </div>
-                      <div class="form-element">
-                        <label class="form-label" aria-required="true">Tags</label>
-                        <input class="form-control" type="text" id="tagsInput" placeholder="Python, Java, CSS" required>
-                       
-                        <div id="tagSuggestions"></div>
-                      </div>
+                     <form method = 'POST'>
+                      {%csrf_token%}
+                      {%bootstrap_form form%}
                       <div class="col-12" style="margin-top: 30px;">
                         <button class="btn btn-outline-success sub-form" type="submit">ASK!</button>
                       </div>
+                    </form>
                     </div>
                       <div class = "col-4">
                         {% include "components/tags.html" %}

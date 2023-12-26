@@ -1,17 +1,17 @@
 {%load static%}
 <link rel="stylesheet" type="text/css" href="{% static '/css/userblock.css' %} ">
-
+<link rel="stylesheet" type="text/css" href="{% static '/css/user_links.css' %} ">
 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu"> 
      <div>
      <li class="nav-item ">
-          <a class="nav-link" href="{% url 'settings_url' 1 %}">Settings</a>
+          <a class="nav-link mylink" href="{% url 'settings_url' %}">Settings</a>
         </li>
         <li class="nav-item ">
-          <a class="nav-link" href="{% url 'basic_url' %}">Log out</a>
+          <a class="nav-link mylink" href="{% url 'logout_url' %}">Log out</a>
         </li>
      </div>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'basic_url' %}">username</a>
+          <a class="nav-link mylink" href="{% url 'basic_url' %}">{{user.user.username}}</a>
         </li>
      <li class="nav-item dropdown">
 

@@ -1,7 +1,11 @@
 {% extends 'base.html'%}
 {%load static%}
 {% block content %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/login.css' %} ">
+<link rel="stylesheet" type="text/css" href="{% static '/css/user_links.css' %} ">
 <main class = "flex-shrink-8"> 
      <div class = "container">
        <div class="row">
@@ -9,39 +13,7 @@
           <h1>Log In</h1>
           <form method = "POST" action = "{%url 'login_url'%}">
             {% csrf_token %}
-            {{ form.non_field_errors }}
-          <div class="row g-3 align-items-center" style = "margin-top: 10%; margin-bottom: 10%;">
-               <div class="col-3">
-                {{ form.username.errors }}
-                  <label for="username" class="col-form-label">Login</label>
-                  
-               </div>
-               <div class="col-auto">
-                {{form.username}}
-              
-                 <!--<input type="text" class="form-control" id="username"  style = "margin-left: 20px;" placeholder="Enter wour login here">-->
-               </div>
-             </div>
-         
-          
-           <div class="row g-3 align-items-center" style = "margin-bottom: 10%;">
-               <div class="col-3">
-                {{ form.password.errors }}
-                 <label for="inputPassword6" class="col-form-label">Password</label>
-               </div>
-               <div class="col-auto">
-                {{form.password}}
-                <div class="invalid-feedback">
-                  Неверный пароль!
-                </div>
-                <!-- <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">-->
-               </div>
-               <div class="col-auto">
-                 <span id="passwordHelpInline" class="form-text">
-                   Must be 8-20 characters long.
-                 </span>
-               </div>
-             </div>
+           {%bootstrap_form form %}
              <div style = "display: block;">
              <button class="btn btn-bd-primary btn-col" type="submit"> Log in</button>
              <a href ="{%url 'signup_url'%}" class = "create" style = "margin-bottom: 200px;">Create new accaunt</a>

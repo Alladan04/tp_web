@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script type="module">
+import RefreshRuntime from "/gp_frontend/@react-refresh"
+RefreshRuntime.injectIntoGlobalHook(window)
+window.$RefreshReg$ = () => {}
+window.$RefreshSig$ = () => (type) => type
+window.__vite_plugin_react_preamble_installed__ = true
+</script>
+
+    <script type="module" src="Vite%20+%20React%20+%20TS_files/client"></script>
+
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="http://localhost:3000/gp_frontend/vite.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite + React + TS</title>
+    <!-- Start Single Page Apps for GitHub Pages -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License
+      // https://github.com/rafgraph/spa-github-pages
+      // This script checks to see if a redirect is present in the query string,
+      // converts it back into the correct url and adds it to the
+      // browser's history using window.history.replaceState(...),
+      // which won't cause the browser to attempt to load the new url.
+      // When the single page app is loaded further down in this file,
+      // the correct url will be waiting in the browser's history for
+      // the single page app to route accordingly.
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <!-- End Single Page Apps for GitHub Pages -->
+  <style type="text/css" data-vite-dev-id="/home/alla/rip_front/rip_front/src/page/OperationPage/OperationPage.css">@import url('https://fonts.googleapis.com/css?family=Fjalla+One|Montserrat:300,400,700,800|Open+Sans:300');
+
+body {
+  background-image: linear-gradient(
+    to right bottom,
+    #ff0057,
+    #b11663,
+    #3d0d2b,
+    #333,
+    #333
+  );
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+main{
+width:100%;
+}
+
+.card{
+  box-shadow: 0 6px 6px rgba(#000, 0.3);
+  max-width: 720px;
+  margin: 5% auto;
+  transition: 200ms;
+  background: #fff;
+  
+  .card__title{
+    display: flex;
+    align-items: center;
+    padding: 30px 40px;
+    
+    h3{
+      flex: 0 1 200px;
+      text-align: right;
+      margin: 0;
+      color: #252525;
+      font-family: sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+    
+    .icon{
+      flex: 1 0 10px;
+      background: #ff0057;
+      color: #fff;
+      padding: 10px 10px;
+      transition: 200ms;
+      
+      > a{
+        color: #fff;
+      }
+      
+      &:hover{
+        background: #252525;
+      }
+    }
+  }
+  
+  .card__body{
+    padding: 0 40px;
+    display: flex;
+    flex-flow: row no-wrap;
+    margin-bottom: 25px;
+    
+    > .half{
+      box-sizing: border-box;
+      padding: 0 15px;
+      flex:  0 50%;
+    }
+    
+    .featured_text{
+      h1{
+        margin: 0;
+        padding: 0;
+        font-weight: 800;
+        font-family: "Montserrat", sans-serif;
+        font-size: 64px;
+        line-height: 50px;
+        color: #181e28;
+      }
+      
+      p{
+        margin: 0;
+        padding: 0;
+        
+        &.sub{
+          font-family: "Montserrat", sans-serif;
+          font-size: 26px;
+          text-transform: uppercase;
+          color: #686e77;
+          font-weight: 300;
+          margin-bottom: 5px;
+        }
+        
+        &.price{
+          font-family: "Fjalla One", sans-serif;
+          color: #252525;
+          font-size: 26px;
+        }
+      }
+    }
+    
+    .image{
+      padding-top: 15px;
+      width: 100%;
+      
+      img{
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+    }
+    
+    .description{
+      margin-bottom: 25px;
+      
+      p{
+        margin: 0;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 300;
+        line-height: 27px;
+        font-size: 16px;
+        color: #555;
+      }
+    }
+    
+    span.stock{
+      font-family: "Montserrat", sans-serif;
+      font-weight: 600;
+      color: #ff096f;
+    }
+    
+    .reviews{
+      .stars{
+        display: inline-block;
+        list-style: none;
+        padding: 0;
+        
+        > li{
+          display: inline-block;
+          
+          .fa{
+            color: #ff0057;
+          }
+        }
+      }
+      
+      > span{
+        font-family: "Open Sans", sans-serif;
+        font-size: 14px;
+        margin-left: 5px;
+        color: #555;
+      }
+    }
+  }
+  
+  .card__footer{
+    padding: 30px 40px;
+    display: flex;
+    flex-flow: row no-wrap;
+    align-items: center;
+    position: relative;
+    
+    &::before{
+      content: "";
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 40px;
+      width: calc(100% - 40px);
+      height: 3px;
+      background: #ff0057;
+      background: linear-gradient(to right, #ff0057 0%,#ff0057 20%,#ddd 20%,#ddd 100%);
+    }
+    
+    .recommend{
+      flex: 1 0 10px;
+      
+      p{
+        margin: 0;
+        font-family: "Montserrat", sans-serif;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 14px;
+        color: #555;
+      }
+     
+      h3{
+        margin: 0;
+        font-size: 20px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #ff0057;
+      }
+    }
+    
+    .action{
+      button{
+        cursor: pointer;
+        border: 1px solid #ff0057;
+        padding: 14px 30px;
+        border-radius: 200px;
+        color: #fff;
+        background: #ff0057;
+        font-family: "Open Sans", sans-serif;
+        font-size: 16px;
+        transition: 200ms;
+        
+        &:hover{
+          background: #fff;
+          color: #ff0057;
+        }
+      }
+    }
+  }
+}
+</style></head>
+  <body>
+    <div id="myroot"><div class="content-wrapper"></div></div>
+    <script type="module" src="Vite%20+%20React%20+%20TS_files/main.tsx"></script>
+  
+
+</body></html>

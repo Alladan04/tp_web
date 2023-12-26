@@ -28,8 +28,9 @@
                <form class="d-flex" type = "text" role="search"  method = "GET" action = "{%url 'search_url' %}">
                 {% csrf_token %}
                     <input class="form-control me-2" name = "search" type="text" placeholder="Search" aria-label="Search">
-                   <button class="btn btn-outline-success"type = "submit" >ASK!</button>
+                   
                   </form>
+                  <a class="btn btn-outline-success" href="{% url 'ask_url' %}" >ASK!</a>
                 
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 

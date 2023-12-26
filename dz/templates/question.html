@@ -54,9 +54,12 @@
              <!-- ТУТ еще пагниацию воткнуть надо!!!!!-->
             {% include "components/pagination.html"%}
              <div class = container>
-               <textarea placeholder="Type your answer here"> </textarea>
+              <form method="POST">
+                {%csrf_token%}
+               {{form}}
                <button class="btn btn-bd-primary" type="submit" style = "background-color: #a77af0;">Answer</button>
-            </div>
+              </form>
+              </div>
           </div>
      
            <div class = "col-4">
