@@ -86,20 +86,7 @@ class AnswerForm(forms.Form):
 
 class TagForm(forms.Form):
     name = forms.CharField( required=True, max_length=30)
-'''class AskForm(forms.Form):
-    title = forms.CharField(widget=forms.TextInput(attrs = {"class":"form-control", "placeholder":"Why do people lie?"}), required=True, max_length=256, min_length=4)
-    text =  forms.CharField(max_length=500, widget=forms.TextInput(attrs={"placeholder":"Type your question here"}))
-    tags = forms.CharField(max_length=500, widget=forms.TextInput(attrs={"placeholder":"tag1, tag2, tag3"}), required=False)
-    img =  forms.ImageField(required=False)
-    def clean_tags(self):
-        cd = self.cleaned_data.get('tags')
-        cd = cd.split(',')
-        if len(cd) == 0:
-            return []
-        if len(cd)>3:
-            raise forms.ValidationError('Максимум три тега')
-        return cd
-        '''
+
 class AskForm(forms.ModelForm):
     tags = forms.CharField(max_length=500, widget=forms.TextInput(attrs={"placeholder":"tag1, tag2, tag3"}), required=False)
     class Meta:

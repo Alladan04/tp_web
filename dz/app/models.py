@@ -86,6 +86,8 @@ class QuestionLikeManager(models.Manager):
                if question.rating == None:
                     question.rating = 0
                question.rating +=1
+               if question.rating<1:
+                    question.rating = 1
                new.save()
                
           else:
@@ -93,9 +95,34 @@ class QuestionLikeManager(models.Manager):
                if question.rating == None:
                     question.rating = 0
                question.rating-=1
+               if question.rating<0:
+                    question.rating = 0
+               
           
           question.save()
           return question.rating
+class AnswerLikeManager(models.Manager):
+     def toggle_like(self, user, answer):
+          if not self.filter(user = user, answer = answer).exists():
+               new = self.create(user=user, answer=answer)
+               if answer.rating == None:
+                    answer.rating = 0
+               answer.rating +=1
+               if answer.rating <1:
+                    answer.rating = 1
+               new.save()
+               
+          else:
+               new = self.filter(user = user, answer = answer).delete()
+               if answer.rating == None:
+                    answer.rating = 0
+              
+               answer.rating-=1
+               if answer.rating <0:
+                    answer.rating = 0
+          
+          answer.save()
+          return answer.rating
  ##########################################################################################    
 
 #Пользователь – электронная почта, никнейм, пароль, аватарка, дата регистрации, рейтинг.
@@ -166,6 +193,7 @@ class QuestionLike(models.Model):
 class AnswerLike(models.Model):
     answer = models.ForeignKey('Answer',models.DO_NOTHING, blank= True, null = True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank= True, null = True)
+    objects = AnswerLikeManager()
     class Meta:
         managed = True
         unique_together = ["answer", "user"]

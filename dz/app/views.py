@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.urls import reverse
-from .models import Question, Tag, TagQuestion, Answer, Profile, User, QuestionLike
+from .models import AnswerLike, Question, Tag, TagQuestion, Answer, Profile, User, QuestionLike
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignupForm, SettingsForm, AnswerForm, AskForm,SettingsModelForm
 import requests as python_requests
@@ -101,7 +101,6 @@ def question(request, id):
 @csrf_protect
 def ask(request):
      auth = request.user.is_authenticated
-     user = None
      if request.method=='POST':
          if auth:
                form = AskForm(request.POST, request.FILES)
@@ -117,32 +116,7 @@ def ask(request):
                                                         'user_list':get_best_members(),
                                                         'auth':auth, 'form':form}, status=200)
                
-          ''' form = AskForm(request.POST, request.FILES)
-          if auth:
-               user = Profile.objects.filter(user = request.user.id)[0]
-               if form.is_valid():
-                    cd = form.cleaned_data
-                    question = Question.objects.create(img = cd['img'], title = cd['title'], text = cd['text'], creation_date = datetime.now(), author = user.user)
-                    question.save()
-                    for tag in cd['tags']:
-                         if tag == '':
-                              continue
-                         if Tag.objects.filter (name = tag).exists():
-                              f_tag= Tag.objects.filter (name = tag)[0]
-                         else:
-                              f_tag = Tag.objects.create(name = tag)
-                              f_tag.save()
-                         tq = TagQuestion.objects.create(tag =f_tag, question = question )
-                         tq.save()
-                    return redirect(reverse('question_url', args=[question.id]))
-
-          else:
-               return redirect('{}?continue={}'.format(reverse('login_url'), reverse('ask_url')))
-     else:
-          form = AskForm()
-     return render(request=request, template_name="ask.html", context = { 'tag_list':get_all_tags(),
-                                                        'user_list':get_best_members(),
-                                                        'auth':auth, 'form':form}, status=200)'''
+         
 @csrf_protect
 @login_required(login_url = 'login_url', redirect_field_name='continue')
 def settings(request):
@@ -199,9 +173,15 @@ def signup(request):
     return render(request, 'sign_up1.html', {'form': form, 'tag_list':get_all_tags(),
                                                               'user_list':get_best_members()})
 @login_required
-@csrf_protect
+#@csrf_protect
 def like(request):
      id = request.POST.get('id')
      question = Question.objects.get(id = int(id))
      count = QuestionLike.objects.toggle_like(user = request.user, question = question)
+     return JsonResponse({"count":count} )
+@login_required
+def answer_like(request):
+     id = request.POST.get('id')
+     answer= Answer.objects.get(id = int(id))
+     count = AnswerLike.objects.toggle_like(user = request.user, answer = answer)
      return JsonResponse({"count":count} )

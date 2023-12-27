@@ -16,7 +16,10 @@
                 {%else%}
                     <img class = "q-image" src ="{% static '/imgs/pic.jpeg' %} ">
                 {%endif%}
-                 {%include 'components/like_comp.html'%}
+                <div class="like-container" name = "question_like_container">
+                  <button class="like-button heart" id = {{question.id}}></button>
+                  <span class="like-count">{{question.rating}}</span>
+             </div>
                </div>
                <div class = "col-8 container" style = "border: 3cap; border-color: black;">
   
@@ -37,7 +40,10 @@
            <div class = "row question">
                <div class = "col-3">
                  <img class = "q-image" src = "{% static '/imgs/pic.jpeg' %}"> 
-                 {%include 'components/like_comp.html'%}
+                 <div class="like-container" >
+                  <button class="like-button heart" id = {{answer.id}}></button>
+                  <span class="like-count">{{answer.rating}}</span>
+             </div>
                </div>
                  <div class = "col-9 container">
                    <div class = "q-text">{{answer.text}}</div>
@@ -74,13 +80,33 @@
        </div>
        </main>
     <script>
-     const likeButton = document.querySelector('.like-button');
-     const likeCount = document.querySelector('.like-count');
- 
-     likeButton.addEventListener('click', () =>{
-  // Получаем текущее значение счетчика лайков и увеличиваем на 1
-  const currentCount = parseInt(likeCount.textContent, 10);
-  likeCount.textContent = currentCount + 1;
+const likeItems = document.getElementsByClassName('like-container');
+
+console.log(likeItems[0].children)
+for (let item of likeItems){
+
+  const[button, count] =item.children;
+  console.log (button.id)
+  button.addEventListener('click', ()=> {
+
+    const formData = new FormData()
+    formData.append("id",button.id)
+    if (item.name =='question_like_container'){
+    request = new Request("/like", {method:'POST', body: formData})
+    }
+    else{
+      request = new Request("http://127.0.0.1:8000/like/answer", {method:'POST', body: formData})
+    }
+    fetch(request)
+    .then((response)=>response.json()
+    )
+    .then ((data)=>{
+      console.log (data.count)
+      count.innerHTML = data.count;}
+      )
+
+    
 });
+}
     </script>
     {% endblock %}
