@@ -79,12 +79,28 @@ class ProfileManager(models.Manager):
                likes = likes[0:n]
           profiles = [Profile.objects.get(id = lk['author'])for lk in likes]
           return profiles
-      
+class QuestionLikeManager(models.Manager):
+     def toggle_like(self, user, question):
+          if not self.filter(user = user, question = question).exists():
+               new = self.create(user=user, question=question)
+               if question.rating == None:
+                    question.rating = 0
+               question.rating +=1
+               new.save()
+               
+          else:
+               new = self.filter(user = user, question = question).delete()
+               if question.rating == None:
+                    question.rating = 0
+               question.rating-=1
+          
+          question.save()
+          return question.rating
  ##########################################################################################    
 
 #Пользователь – электронная почта, никнейм, пароль, аватарка, дата регистрации, рейтинг.
 class Profile(models.Model):
-    img= models.CharField(max_length=150,blank =True, null = True)
+    img= models.ImageField(max_length=150,blank =True, null = True, default = 'avatar.jpeg', upload_to  = "uploads/%Y/%m/%d")
     rating = models.IntegerField(blank = True, null = True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank = True, null=True)
     objects = ProfileManager()
@@ -99,8 +115,9 @@ class Question(models.Model):
      title = models.CharField(max_length=256, null = False, blank = False)
      text = models.CharField(max_length=500, null = True, blank=True)
      author = models.ForeignKey(User, models.DO_NOTHING, blank= True, null = True)
+     img = models.ImageField(max_length=150,blank =True, null = True, default = 'avatar.jpeg', upload_to  = "uploads/%Y/%m/%d")
      creation_date = models.DateTimeField(blank=True, null=True)
-     rating = models.IntegerField(blank = True, null = True)
+     rating = models.IntegerField(blank = True, null = True,default = 0)
      objects = QuestionManager()
      class Meta:
         managed = True
@@ -140,6 +157,7 @@ class TagQuestion(models.Model):
 class QuestionLike(models.Model):
     question = models.ForeignKey('Question',models.DO_NOTHING, blank= True, null =True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank= True, null = True)
+    objects = QuestionLikeManager()
     class Meta:
         managed = True
         db_table = 'question_like'

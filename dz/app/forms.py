@@ -66,6 +66,17 @@ class SettingsForm(forms.Form):
         return email
     class Meta:
         model= User
+class SettingsModelForm(forms.ModelForm):
+    img = forms.ImageField(required=False)
+    def save(self, **kwargs):
+        user = super().save(**kwargs)
+        profile = user.profile
+        profile.img = self.cleaned_data.get('img')
+        profile.save()
+        return user
+    class Meta:
+        model = User
+        fields = ['first_name', 'username', 'email']
 
 class AnswerForm(forms.Form):
     answer = forms.CharField(max_length=500, widget=forms.Textarea(attrs={"placeholder":"Type your anwer here"}))

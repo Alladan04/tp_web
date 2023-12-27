@@ -13,11 +13,14 @@
 
          <div class="col-9">
           <h1>Settings :{{user.username}}</h1>
-          <form method = POST action = "{% url 'settings_url' %}">
+          <form method = POST action = "{% url 'settings_url' %}" enctype = 'multipart/form-data'>
             {%csrf_token%}
             {%bootstrap_form form%}
-            
-            
+            {%if request.user.profile.img%}
+            <div style = "width:300px">
+              <img src = {{request.user.profile.img.url}} class = 'w-100'>
+            </div>
+          {%endif%}
              <div class="col-12" style="margin-top: 30px;">
                   <button class="btn btn-bd-primary" type="submit" style = "background-color: #aca6fd; margin-bottom: 20%;">Save</button>
                 </div>    

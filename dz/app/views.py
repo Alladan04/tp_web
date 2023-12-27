@@ -1,14 +1,17 @@
+from django.forms import model_to_dict
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.urls import reverse
-from .models import Question, Tag, TagQuestion, Answer, Profile, User
+from .models import Question, Tag, TagQuestion, Answer, Profile, User, QuestionLike
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, SignupForm, SettingsForm, AnswerForm, AskForm
+from .forms import LoginForm, SignupForm, SettingsForm, AnswerForm, AskForm,SettingsModelForm
 import requests as python_requests
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 
 ##########################################################################
@@ -61,7 +64,7 @@ def search(request):
      raw_questions = Question.objects.find(request.GET.get('search', ''))
      questions = paginate(raw_questions, request, 30)
      return render(request=request, template_name="index.html",context = {'questions':questions.object_list, 'page':questions,'tag_list':get_all_tags(),'user_list':get_best_members()}, status=200)
-
+@csrf_protect
 def question(request, id):
      try:
          question = Question.objects.get_by_id(id)
@@ -94,6 +97,7 @@ def question(request, id):
                                                               'form':form,
                                                               'auth':auth,
                                                               'user':user},status=200)
+@csrf_protect
 def ask(request):
      auth = request.user.is_authenticated
      user = None
@@ -124,26 +128,20 @@ def ask(request):
      return render(request=request, template_name="ask.html", context = { 'tag_list':get_all_tags(),
                                                         'user_list':get_best_members(),
                                                         'auth':auth, 'form':form}, status=200)
-
+@csrf_protect
 @login_required(login_url = 'login_url', redirect_field_name='continue')
 def settings(request):
-     auth = request.user.is_authenticated
-     user = User.objects.get(id = request.user.id)
-     profile = Profile.objects.get(user = user)
-    # print (request.user.username, profile.img , request.user.email)
-     data = {'username':user.username,'img':profile.img, 'first_name':user.first_name, 'email':user.email}
-     form = SettingsForm(initial = data)
-     if request.method == "POST":
-          form = SettingsForm(request.POST, initial=data)
-          if form.has_changed and form.is_valid():
-               cd = form.cleaned_data
-               print (cd['username'])
-               User.objects.filter (id = request.user.id).update(username = cd['username'], email = cd['email'], first_name= cd['first_name'])
-               Profile.objects.filter(user = user).update (img = cd['img'])
-               return redirect(reverse('basic_url'))
-     return  render (request=request, template_name="settings.html", context = {'tag_list':get_all_tags(),
-                                                              'user_list':get_best_members(),'auth':auth, 'user':profile, 'form':form}, status = 200)
+    if request.method =='GET':
+         form = SettingsModelForm(initial=model_to_dict(request.user))
+        
+    elif request.method == 'POST':
+         form = SettingsModelForm(request.POST,request.FILES, instance=request.user)
+         if form.is_valid():
+              form.save()
+    return render (request=request, template_name="settings.html", context = {'tag_list':get_all_tags(),
+                                                              'user_list':get_best_members(),'auth':auth, 'form':form}, status = 200)
 
+@csrf_protect
 def log_in(request):
      if request.method == 'POST':
         print (request.POST)
@@ -160,10 +158,12 @@ def log_in(request):
         form = LoginForm()
      return render(request, 'login.html', {'form': form,'tag_list':get_all_tags(),
                                                               'user_list':get_best_members() })
-    #return render(request=request, template_name="login.html", status = 200)
+    #return render(request=request, template_name="login.html", status = 200)'
+@csrf_protect
 def log_out(request):
      auth.logout(request)
      return HttpResponseRedirect(reverse('login_url'))
+@csrf_protect
 def signup(request):
     if request.method == 'POST':
           form = SignupForm(request.POST)
@@ -183,3 +183,10 @@ def signup(request):
         form = SignupForm()
     return render(request, 'sign_up1.html', {'form': form, 'tag_list':get_all_tags(),
                                                               'user_list':get_best_members()})
+#@login_required
+#@csrf_protect
+def like(request):
+     id = request.POST.get('id')
+     question = Question.objects.get(id = int(id))
+     count = QuestionLike.objects.toggle_like(user = request.user, question = question)
+     return JsonResponse({"count":count} )

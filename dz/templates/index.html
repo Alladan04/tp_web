@@ -14,7 +14,7 @@
            <h2>Tag:{{tag_name}}</h2>
            {%endif%}
            {% for question in questions %}
-          
+           {%csrf_token%}
            {%include 'components/question-comp.html' %}
            {% endfor %}
           {% include "components/pagination.html"%}
@@ -25,4 +25,30 @@
      </div>
 
    </main>
+   <script>
+    const likeItems = document.getElementsByClassName('like-container');
+console.log(likeItems[0].children)
+for (let item of likeItems){
+
+  const[button, count] =item.children;
+  console.log (button.id)
+  button.addEventListener('click', ()=> {
+
+    const formData = new FormData()
+    formData.append("id",button.id)
+    request = new Request("/like", {method:'POST', body: formData
+  })
+    fetch(request)
+    .then((response)=>response.json()
+    )
+    .then ((data)=>{
+      console.log (data.count)
+      count.innerHTML = data.count;}
+      )
+
+    
+});
+}
+   </script>
+ 
 {% endblock %}

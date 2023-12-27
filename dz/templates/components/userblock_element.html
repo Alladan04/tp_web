@@ -17,7 +17,10 @@
 
       
          <div class="profile-pic">
-             <img src="{%static '/imgs/pic.jpeg'%}" alt="Profile Picture">
-       
+          {%if request.user.profile.img%}
+             <img src= "{{request.user.profile.img.url}}" alt="Profile Picture">
+          {%else%}
+          <img src= "{%static '/imgs/pic.jpeg'%}"alt="Profile Picture">
+          {%endif%}
        </a></li>
        </ul>

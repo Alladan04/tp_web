@@ -4,9 +4,13 @@
 <link rel="stylesheet" type="text/css" href="{% static '/css/question.css' %} ">
 
 <div class = "row question">
-     <div class = "col-3">
+     <div class = "col-3" style = "display: inline;">
        <img class = "q-image" src = "{% static '/imgs/pic.jpeg'%}">
-       {%include 'components/like_comp.html'%}
+       <div class="like-container">
+        <button class="like-button heart" id={{question.id}}></button>
+        <span class="like-count">{{question.rating}}</span>
+   </div>
+      
      </div>
        <div class = "col-9">
          <div class = "q-title"><a href="{%url 'question_url' question.id%}">{{question.title}}</a></div>
