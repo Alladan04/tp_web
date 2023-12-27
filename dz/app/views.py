@@ -82,6 +82,7 @@ def question(request, id):
                if form.is_valid():
                     answer = Answer.objects.create(text = form.cleaned_data["answer"], creation_date = datetime.now(), author = user.user, question = question)
                     answer.save()
+               return redirect(reverse('question_url',args=[id]))
           else:
                return redirect(reverse('login_url'))
      else:
@@ -102,12 +103,26 @@ def ask(request):
      auth = request.user.is_authenticated
      user = None
      if request.method=='POST':
-          form = AskForm(request.POST)
+         if auth:
+               form = AskForm(request.POST, request.FILES)
+               if form.is_valid():
+                   question= form.save(request.user)
+                    
+               return redirect(reverse('question_url', args=[question.id]))
+         else:
+              return redirect('{}?continue={}'.format(reverse('login_url'), reverse('ask_url')))
+     elif request.method=='GET':
+          form = AskForm()
+          return render(request=request, template_name="ask.html", context = { 'tag_list':get_all_tags(),
+                                                        'user_list':get_best_members(),
+                                                        'auth':auth, 'form':form}, status=200)
+               
+          ''' form = AskForm(request.POST, request.FILES)
           if auth:
                user = Profile.objects.filter(user = request.user.id)[0]
                if form.is_valid():
                     cd = form.cleaned_data
-                    question = Question.objects.create(title = cd['title'], text = cd['text'], creation_date = datetime.now(), author = user.user)
+                    question = Question.objects.create(img = cd['img'], title = cd['title'], text = cd['text'], creation_date = datetime.now(), author = user.user)
                     question.save()
                     for tag in cd['tags']:
                          if tag == '':
@@ -127,7 +142,7 @@ def ask(request):
           form = AskForm()
      return render(request=request, template_name="ask.html", context = { 'tag_list':get_all_tags(),
                                                         'user_list':get_best_members(),
-                                                        'auth':auth, 'form':form}, status=200)
+                                                        'auth':auth, 'form':form}, status=200)'''
 @csrf_protect
 @login_required(login_url = 'login_url', redirect_field_name='continue')
 def settings(request):
@@ -183,8 +198,8 @@ def signup(request):
         form = SignupForm()
     return render(request, 'sign_up1.html', {'form': form, 'tag_list':get_all_tags(),
                                                               'user_list':get_best_members()})
-#@login_required
-#@csrf_protect
+@login_required
+@csrf_protect
 def like(request):
      id = request.POST.get('id')
      question = Question.objects.get(id = int(id))

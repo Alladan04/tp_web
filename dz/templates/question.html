@@ -11,7 +11,11 @@
            <div class = "container">
                <div class = "row">
                <div class = "col-4">
+                {%if question.img%}
+                <img class = "q-image" src ={{question.img.url}}>
+                {%else%}
                     <img class = "q-image" src ="{% static '/imgs/pic.jpeg' %} ">
+                {%endif%}
                  {%include 'components/like_comp.html'%}
                </div>
                <div class = "col-8 container" style = "border: 3cap; border-color: black;">

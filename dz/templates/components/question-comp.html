@@ -5,7 +5,11 @@
 
 <div class = "row question">
      <div class = "col-3" style = "display: inline;">
-       <img class = "q-image" src = "{% static '/imgs/pic.jpeg'%}">
+      {%if question.img%}
+      <img class = "q-image" src ={{question.img.url}}>
+      {%else%}
+          <img class = "q-image" src ="{% static '/imgs/pic.jpeg' %} ">
+      {%endif%}
        <div class="like-container">
         <button class="like-button heart" id={{question.id}}></button>
         <span class="like-count">{{question.rating}}</span>
